@@ -16,6 +16,9 @@ struct Client: Identifiable {
     var clientPayment: String
 }
 
+extension Color {
+    static let offWhite = Color(red: 225 / 255, green: 225 / 255, blue: 235 / 255)
+}
 struct ContentView: View {
     
     @State var clientName = ""
@@ -26,6 +29,9 @@ struct ContentView: View {
     // to update
     @State var showSheet = false
     @State var clientId = ""
+    
+    // to delete
+    @State var showActionSheet = false
     
     var body: some View {
         VStack {
@@ -44,14 +50,14 @@ struct ContentView: View {
                             self.clientName = client.clientName
                             self.clientPayment = client.clientPayment
                             self.showSheet = true
-                        
+                            
                         }) {
                             HStack {
                                 Text("\(client.clientName) || \(client.clientPayment)")
                                     .frame(maxWidth: UIScreen.main.bounds.size.width)
                                     .foregroundColor(.white)
                             }.background(Color.blue)
-                        }.sheet(isPresented: self.$showSheet, content: {
+                        }.sheet(isPresented: self.$showSheet) {
                             VStack {
                                 Text("Modify client - \(self.clientId)")
                                 TextField("Add a new client", text: $clientName).padding()
@@ -61,53 +67,78 @@ struct ContentView: View {
                                     Button(action: {
                                         // will put update here
                                         let clientDataDictionary = [
-                                         "name": self.clientName,
-                                         "payment": self.clientPayment
+                                            "name": self.clientName,
+                                            "payment": self.clientPayment
                                         ]
-                                        let docRef = Firestore.firestore().document("clients/\(client.id)")
-                                         print("setting data")
-                                         docRef.setData(clientDataDictionary, merge: true) { (error) in
-                                             if let error = error {
-                                                 print("error = \(error)")
-                                             } else {
-                                                 print("data updated successfully")
+                                        let docRef = Firestore.firestore().document("clients/\(self.clientId)")
+                                        print("setting data", self.clientId)
+                                        docRef.setData(clientDataDictionary, merge: true) { (error) in
+                                            if let error = error {
+                                                print("error = \(error)")
+                                            } else {
+                                                print("data updated successfully")
                                                 self.showSheet = false
-                                                 self.clientName = ""
-                                                 self.clientPayment = ""
-                                              
-                                             }
-                                         }
-                                   
+                                                self.clientName = ""
+                                                self.clientPayment = ""
+                                                
+                                            }
+                                        }
+                                        
                                     }, label: {
                                         Text("Update")
                                     }).padding()
-                                    Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
+                                    // end update
+                                    // Delete Button
+                                    Button(action: {
+                                        self.showActionSheet = true
+                                    }, label: {
                                         Text("Delete")
+                                            .padding()
+                                            .background(Color.init(red: 1, green: 0.9, blue: 0.9))
+                                            .foregroundColor(.red)
+                                            .cornerRadius(5)
                                     }).padding()
+                                    .actionSheet(isPresented: self.$showActionSheet, content: {
+                                        ActionSheet(title: Text("Delete"), message: Text("Are you sure deleting this client?"), buttons: [
+                                            .default(Text("Yes"), action: {
+                                                Firestore.firestore().collection("clients").document("\(self.clientId)").delete() { err in
+                                                    if let err = err {
+                                                        print("Error removing document: \(err)")
+                                                    } else {
+                                                        print("Document successfully removed client!")
+                                                        self.showSheet = false
+                                                    }
+                                                }
+                                                
+                                            }),
+                                            .cancel()
+                                        ])
+                                    })
+                                    // end delete
                                 }
                             }
-                        })
+                        }
                         //
-//                        HStack {
-//                            Text("\(client.clientName) || \(client.clientPayment)")
-//                                .frame(maxWidth: UIScreen.main.bounds.size.width)
-//                        }.background(Color.blue)
-                      
+                        //                        HStack {
+                        //                            Text("\(client.clientName) || \(client.clientPayment)")
+                        //                                .frame(maxWidth: UIScreen.main.bounds.size.width)
+                        //                        }.background(Color.blue)
+                        
                     }
                 } else {
                     Text("Submit a client")
                 }
                 
             }.frame(width: UIScreen.main.bounds.size.width)
-            .background(Color.red)
+            .background(Color.offWhite)
             // end showing data
             // button to add data
             Button(action: {
-               let clientDataDictionary = [
-                "name": self.clientName,
-                "payment": self.clientPayment
-               ]
-                let docRef = Firestore.firestore().document("clients/\(self.clientId)")
+                let clientDataDictionary = [
+                    "name": self.clientName,
+                    "payment": self.clientPayment
+                ]
+                let docRef = Firestore.firestore().document("clients/\(UUID().uuidString)")
                 print("setting data")
                 docRef.setData(clientDataDictionary) { (error) in
                     if let error = error {
@@ -116,13 +147,13 @@ struct ContentView: View {
                         print("data uploaded successfully")
                         self.clientName = ""
                         self.clientPayment = ""
-                     
+                        
                     }
                 }
             }, label: {
                 Text("Add Client")
             })
-           
+            
         }
         // To read data
         .onAppear() {
