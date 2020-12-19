@@ -9,11 +9,27 @@
 
 import SwiftUI
 import Firebase
+import FirebaseFirestore
+import FirebaseFirestoreSwift
+//
+import FirebaseAuth
+
 
 struct Client: Identifiable {
+    
     var id = UUID()
     var clientName: String
     var clientPayment: String
+   
+    // using id from Firestore
+    //@DocumentID var id: String? = UUID().uuidString
+    // change to compactMap for the ForEach or map
+    // using time from  Firestore
+    @ServerTimestamp var createdAt: Timestamp?
+    // using Auth for User/ data
+    var userId: String?
+    
+    
 }
 
 extension Color {
@@ -33,6 +49,9 @@ struct ContentView: View {
     // to delete
     @State var showActionSheet = false
     
+    // Firestore Auth
+    let userId = Auth.auth().currentUser?.uid
+    
     var body: some View {
         VStack {
             TextField("Add a new client", text: $clientName).padding()
@@ -44,7 +63,7 @@ struct ContentView: View {
                 // showing data
                 if clientsData.count > 0 {
                     ForEach(clientsData, id: \.id) { client in
-                        // Update
+                        // to Update data
                         Button(action: {
                             self.clientId = client.id.uuidString
                             self.clientName = client.clientName
@@ -77,9 +96,10 @@ struct ContentView: View {
                                                 print("error = \(error)")
                                             } else {
                                                 print("data updated successfully")
-                                                self.showSheet = false
                                                 self.clientName = ""
                                                 self.clientPayment = ""
+                                                self.showSheet = false
+                                              
                                                 
                                             }
                                         }
@@ -106,6 +126,8 @@ struct ContentView: View {
                                                         print("Error removing document: \(err)")
                                                     } else {
                                                         print("Document successfully removed client!")
+                                                        self.clientName = ""
+                                                        self.clientPayment = ""
                                                         self.showSheet = false
                                                     }
                                                 }
@@ -136,8 +158,10 @@ struct ContentView: View {
             Button(action: {
                 let clientDataDictionary = [
                     "name": self.clientName,
-                    "payment": self.clientPayment
-                ]
+                    "payment": self.clientPayment,
+                    "createdAt": Date(),
+                    "userId": self.userId
+                ] as [String : Any]
                 let docRef = Firestore.firestore().document("clients/\(UUID().uuidString)")
                 print("setting data")
                 docRef.setData(clientDataDictionary) { (error) in
@@ -157,15 +181,21 @@ struct ContentView: View {
         }
         // To read data
         .onAppear() {
+           
+        
             Firestore.firestore().collection("clients")
+                // Data for User
+                .whereField("userId", isEqualTo: self.userId)
+                // order data with createdAt
+                .order(by: "createdAt")
                 .addSnapshotListener { querySnapshot, error in
                     guard let documents = querySnapshot?.documents else {
-                        print("Error fetching documents: \(error)")
+                        print("Error fetching documents: \(String(describing: error))")
                         return
                     }
                     let clients = documents.map { $0["name"]!}
                     let payments = documents.map { $0["payment"]!}
-                    print(clients)
+                    print(clients, self.userId)
                     // cleaning every time you add a new client
                     self.clientsData.removeAll()
                     //

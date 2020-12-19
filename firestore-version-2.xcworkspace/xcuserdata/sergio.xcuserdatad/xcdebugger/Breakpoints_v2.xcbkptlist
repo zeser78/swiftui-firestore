@@ -14,10 +14,10 @@
             filePath = "firestore-version-2/ContentView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "66"
-            endingLineNumber = "66"
-            landmarkName = "unknown"
-            landmarkType = "0">
+            startingLineNumber = "85"
+            endingLineNumber = "85"
+            landmarkName = "body"
+            landmarkType = "24">
             <Locations>
                <Location
                   uuid = "FDC9E54C-0645-4074-9F85-464A2209670E - 4148201bd29bb114"

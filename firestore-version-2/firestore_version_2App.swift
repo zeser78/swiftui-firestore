@@ -7,12 +7,15 @@
 
 import SwiftUI
 import Firebase
+import FirebaseAuth
 
 @main
 struct firestore_version_2App: App {
     
     init() {
         FirebaseApp.configure()
+        Auth.auth().signInAnonymously()
+        
     }
     var body: some Scene {
         WindowGroup {

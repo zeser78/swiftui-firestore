@@ -8,9 +8,9 @@ target 'firestore-version-2' do
   # Pods for firestore-version-2
 
 pod 'Firebase/Analytics'
+pod 'Firebase/Core'
 pod 'Firebase/Storage'
 pod 'Firebase/Firestore'
-
-
-
+pod 'Firebase/Auth'
+pod 'FirebaseFirestoreSwift', '~> 7.0-beta'
 end
