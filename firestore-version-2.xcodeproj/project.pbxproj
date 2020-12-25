@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -12,6 +12,7 @@
 		490A51532586EC68004EF7C6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 490A51522586EC68004EF7C6 /* Assets.xcassets */; };
 		490A51562586EC68004EF7C6 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 490A51552586EC68004EF7C6 /* Preview Assets.xcassets */; };
 		490A515F2586ED7E004EF7C6 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 490A515E2586ED7E004EF7C6 /* GoogleService-Info.plist */; };
+		49CDF5D625951D1700D9029A /* DataRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49CDF5D525951D1700D9029A /* DataRepository.swift */; };
 		AAB4BB1C3DD22292EC3825FC /* Pods_firestore_version_2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17A5AFD7468A6ED85EA80C4C /* Pods_firestore_version_2.framework */; };
 /* End PBXBuildFile section */
 
@@ -25,6 +26,7 @@
 		490A51552586EC68004EF7C6 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		490A51572586EC68004EF7C6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		490A515E2586ED7E004EF7C6 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		49CDF5D525951D1700D9029A /* DataRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataRepository.swift; sourceTree = "<group>"; };
 		86C4295F1661E1CFAA6F64D8 /* Pods-firestore-version-2.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-firestore-version-2.release.xcconfig"; path = "Target Support Files/Pods-firestore-version-2/Pods-firestore-version-2.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -71,6 +73,7 @@
 			children = (
 				490A514E2586EC66004EF7C6 /* firestore_version_2App.swift */,
 				490A51502586EC66004EF7C6 /* ContentView.swift */,
+				49CDF5D525951D1700D9029A /* DataRepository.swift */,
 				490A51522586EC68004EF7C6 /* Assets.xcassets */,
 				490A515E2586ED7E004EF7C6 /* GoogleService-Info.plist */,
 				490A51572586EC68004EF7C6 /* Info.plist */,
@@ -93,7 +96,6 @@
 				3A95D13E48E0494F9A8F5D91 /* Pods-firestore-version-2.debug.xcconfig */,
 				86C4295F1661E1CFAA6F64D8 /* Pods-firestore-version-2.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -211,6 +213,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				49CDF5D625951D1700D9029A /* DataRepository.swift in Sources */,
 				490A51512586EC66004EF7C6 /* ContentView.swift in Sources */,
 				490A514F2586EC66004EF7C6 /* firestore_version_2App.swift in Sources */,
 			);

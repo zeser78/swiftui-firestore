@@ -40,7 +40,8 @@ struct ContentView: View {
     @State var clientName = ""
     @State var clientPayment = ""
     // to read data
-    @State var clientsData: [Client]
+//    @State var clientsData: [Client]
+    @ObservedObject var clientsData = Clients()
     
     // to update
     @State var showSheet = false
@@ -61,8 +62,8 @@ struct ContentView: View {
             ScrollView {
                 Text("This will be the ScrollView")
                 // showing data
-                if clientsData.count > 0 {
-                    ForEach(clientsData, id: \.id) { client in
+                if clientsData.items.count > 0 {
+                    ForEach(clientsData.items, id: \.id) { client in
                         // to Update data
                         Button(action: {
                             self.clientId = client.id.uuidString
@@ -197,11 +198,11 @@ struct ContentView: View {
                     let payments = documents.map { $0["payment"]!}
                     print(clients, self.userId)
                     // cleaning every time you add a new client
-                    self.clientsData.removeAll()
+                    self.clientsData.items.removeAll()
                     //
                     
                     for i in 0..<clients.count {
-                        self.clientsData.append(Client(id: UUID(uuidString: documents[i].documentID) ?? UUID() ,clientName: clients[i] as? String ?? "Failed to get name", clientPayment: payments[i] as? String ?? "Failed to get payment"))
+                        self.clientsData.items.append(Client(id: UUID(uuidString: documents[i].documentID) ?? UUID() ,clientName: clients[i] as? String ?? "Failed to get name", clientPayment: payments[i] as? String ?? "Failed to get payment"))
                     }
                 }
         }
@@ -210,6 +211,6 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView(clientsData: [])
+        ContentView()
     }
 }

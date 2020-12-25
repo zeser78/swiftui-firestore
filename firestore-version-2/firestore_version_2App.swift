@@ -19,7 +19,7 @@ struct firestore_version_2App: App {
     }
     var body: some Scene {
         WindowGroup {
-            ContentView(clientsData: [])
+            ContentView()
         }
     }
 }
