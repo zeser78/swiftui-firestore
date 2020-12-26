@@ -20,7 +20,7 @@ struct Client: Identifiable {
     var id = UUID()
     var clientName: String
     var clientPayment: String
-   
+    
     // using id from Firestore
     //@DocumentID var id: String? = UUID().uuidString
     // change to compactMap for the ForEach or map
@@ -29,7 +29,7 @@ struct Client: Identifiable {
     // using Auth for User/ data
     var userId: String?
     // Adding date and time
-    var dateBook: Date
+    //    var dateBook: Date
     
     
 }
@@ -42,7 +42,7 @@ struct ContentView: View {
     @State var clientName = ""
     @State var clientPayment = ""
     // to read data
-//    @State var clientsData: [Client]
+    //    @State var clientsData: [Client]
     @ObservedObject var clientsData = Clients()
     
     // to update
@@ -53,7 +53,17 @@ struct ContentView: View {
     @State var showActionSheet = false
     
     // add time
-//    @State var dateBook = Date()
+    @State var dateBook = Date()
+    
+    // Formatter date
+    var dateFormatter: DateFormatter {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .long
+        return formatter
+    }
+    
+    
+    
     
     // Firestore Auth
     let userId = Auth.auth().currentUser?.uid
@@ -63,6 +73,9 @@ struct ContentView: View {
             TextField("Add a new client", text: $clientName).padding()
             TextField("Payment", text: $clientPayment)
                 .keyboardType(.numberPad).padding()
+            DatePicker(selection: $dateBook, in: ...Date(), displayedComponents: .date) {
+                Text("Select a date")
+            }
             
             ScrollView {
                 Text("This will be the ScrollView")
@@ -81,6 +94,7 @@ struct ContentView: View {
                                 Text("\(client.clientName) || \(client.clientPayment)")
                                     .frame(maxWidth: UIScreen.main.bounds.size.width)
                                     .foregroundColor(.white)
+                                // add date here
                             }.background(Color.blue)
                         }.sheet(isPresented: self.$showSheet) {
                             VStack {
@@ -105,7 +119,7 @@ struct ContentView: View {
                                                 self.clientName = ""
                                                 self.clientPayment = ""
                                                 self.showSheet = false
-                                              
+                                                
                                                 
                                             }
                                         }
@@ -166,7 +180,9 @@ struct ContentView: View {
                     "name": self.clientName,
                     "payment": self.clientPayment,
                     "createdAt": Date(),
-                    "userId": self.userId
+                    "userId": self.userId,
+                    "dateBook": self.dateBook
+                    // adding dateBook
                 ] as [String : Any]
                 let docRef = Firestore.firestore().document("clients/\(UUID().uuidString)")
                 print("setting data")
@@ -187,8 +203,8 @@ struct ContentView: View {
         }
         // To read data
         .onAppear() {
-           
-        
+            
+            
             Firestore.firestore().collection("clients")
                 // Data for User
                 .whereField("userId", isEqualTo: self.userId)
