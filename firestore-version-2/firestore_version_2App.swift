@@ -14,7 +14,25 @@ struct firestore_version_2App: App {
     
     init() {
         FirebaseApp.configure()
-        Auth.auth().signInAnonymously()
+    Auth.auth().signInAnonymously()
+////        Auth.auth().createUser(withEmail: "zaravmarine@gmail.com", password: "nadia123") { authResult, error in
+////          // ...
+////            if let authUser = authResult {
+////                print("authUser \(authResult)")
+////            } else {
+////                print(error)
+////            }
+////        }
+//
+//        Auth.auth().signIn(withEmail:"zaravmarine@gmail.com", password: "nadia123") { authResult, error in
+////            guard self != nil else { return }
+//            if let authUser = authResult {
+//                           print("authUser \(authResult)")
+//                       } else {
+//                           print(error)
+//                       }
+//          // ...
+//        }
         
     }
     var body: some Scene {

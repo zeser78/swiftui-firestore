@@ -28,6 +28,8 @@ struct Client: Identifiable {
     @ServerTimestamp var createdAt: Timestamp?
     // using Auth for User/ data
     var userId: String?
+    // Adding date and time
+    var dateBook: Date
     
     
 }
@@ -49,6 +51,9 @@ struct ContentView: View {
     
     // to delete
     @State var showActionSheet = false
+    
+    // add time
+//    @State var dateBook = Date()
     
     // Firestore Auth
     let userId = Auth.auth().currentUser?.uid
